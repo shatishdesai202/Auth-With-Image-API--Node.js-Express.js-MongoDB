@@ -28,14 +28,16 @@ app.use(bodyParser.urlencoded({
 
 const path = require('path');
 
+const fs = require('fs');
 // ----------------------------------------------------------------------------------------------------------
 
-app.use('/static', express.static(path.join(__dirname, 'public')));
+// app.use('/static', express.static(path.join(__dirname, 'public')));
 // app.use('/uploads', express.static('uploads'));
+// app.use(express.static('public'));
 
 
 var storage = multer.diskStorage({
-    destination: "./public/uploads",
+    destination: "./public/uploads/",
     filename: (req, file, cb) => {
         cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
     }
@@ -84,7 +86,7 @@ routes.post('/', upload ,async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: hashedpassword,
-        image: req.file.path
+        image: 'http://localhost:3000/images/sshhttiissddeessaaii6600112233665544/' + req.file.filename
     });
 
     try {       
@@ -114,8 +116,13 @@ routes.post('/login', async (req, res)=>{
     }
 
     const token = jwt.sign({ _id: findUser._id }, 'shatishdesai');
-    res.header('auth-token', token).send(token);
+    res.header('authentication-token', token).send(token);
 
+});
+
+routes.get('/', (req, res)=>{
+    // res.writeHead(200,{'content-type':'image/jpg'});
+    // fs.createReadStream('../public/uploads/file_1602049826236.jpg');
 });
 
 module.exports = routes;
