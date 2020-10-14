@@ -174,7 +174,8 @@ routes.post('/addUserInfo', verify, async (req, res) => {
 
     try {
         const saveUserinfo = await userinfoInsert.save();
-        res.send(saveUserinfo);
+//         res.send(saveUserinfo);
+        res.json({ msg:"successfully register", status:"success" })
     } catch (error) {
         res.status(400).send(error);
     }
